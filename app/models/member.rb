@@ -63,13 +63,37 @@ class Member
     end
 
     # Delete
-    def self.update(id, opts)
+    def self.delete(id)
       results = DB.exec(
         <<-SQL
           DELETE FROM members WHERE member_id=#{id}
         SQL
       )
+      return { 'deleted' => true}
     end
+
+    # Update
+
+    def self.update(id, opts)
+      results = DB.exec(
+        <<-SQL
+          UPDATE members
+          SET
+            name='#{opts["name"]}', role='#{opts["role"]}', pin='#{opts["pin"]}',family_id='#{opts["family_id"]}'
+          WHERE member_id=#{id}
+          RETURNING member_id, name, role, pin, family_id
+        SQL
+      )
+      result = results.first
+      return {
+          'member_id' => result['member_id'].to_i,
+          'name' => result['name'],
+          'role' => result['role'],
+          'pin' => result['pin'],
+          'family_id' => result['family_id']
+        }
+    end
+
 
 
 end
