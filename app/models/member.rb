@@ -10,9 +10,9 @@ class Member
 
     # Index
     def self.all
-      results = DB.exec('SELECT * FROM members')
+      results = DB.exec('SELECT * FROM members;')
       results.map do |result|
-      return {
+      {
           'member_id' => result['member_id'].to_i,
           'name' => result['name'],
           'role' => result['role'],
@@ -28,7 +28,7 @@ class Member
         <<-SQL
           SELECT *
           FROM members
-          WHERE id=#{id}
+          WHERE member_id=#{id}
         SQL
       )
       result = results.first
@@ -60,6 +60,15 @@ class Member
           'pin' => result['pin'],
           'family_id' => result['family_id']
         }
+    end
+
+    # Delete
+    def self.update(id, opts)
+      results = DB.exec(
+        <<-SQL
+          DELETE FROM members WHERE member_id=#{id}
+        SQL
+      )
     end
 
 
