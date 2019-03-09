@@ -15,10 +15,17 @@ ActiveRecord::Schema.define(version: 2019_03_08_183118) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "members", id: false, force: :cascade do |t|
+    t.serial "member_id", null: false
+    t.string "name", limit: 30
+    t.string "role", limit: 30
+    t.integer "pin"
+    t.integer "family_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "username"
     t.string "password_digest"
-    t.string "roles"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

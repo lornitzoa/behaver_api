@@ -9,6 +9,19 @@ Rails.application.routes.draw do
     end
   end
 
+# ------------------------
+#      POSTS ROUTES      #
+# ------------------------
+
+  get '/members', to: 'members#index'
+
+  get '/members/:id', to: 'members#show'
+
+  post '/members', to: 'members#create'
+
+  delete '/members/:id', to: 'members#delete'
+
+  put '/members/:id', to: 'members#update'
 
 
 end
