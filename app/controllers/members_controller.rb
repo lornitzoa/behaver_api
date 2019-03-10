@@ -1,9 +1,5 @@
 class MembersController < ApplicationController
 
-  def children
-    render json: Member.role(params['role'])
-  end
-
   def index
     render json: Member.all
   end
@@ -12,7 +8,9 @@ class MembersController < ApplicationController
     render json: Member.find(params['id'])
   end
 
-
+  def children
+    render json: Member.role
+  end
 
   def create
     render json: Member.create(params['member'])

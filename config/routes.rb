@@ -27,7 +27,4 @@ Rails.application.routes.draw do
 
   put '/members/:id', to: 'members#update'
 
-
-  # get '/children', to: 'children#index'
-
 end

@@ -23,7 +23,7 @@ class Member
     end
 
     # Get Children
-     def self.role(role)
+     def self.role
       results = DB.exec(
       <<-SQL
         SELECT name
@@ -42,9 +42,7 @@ class Member
       end
     end
 
-
-
-    # Show
+    # Show Member
     def self.find(id)
       results = DB.exec(
         <<-SQL
