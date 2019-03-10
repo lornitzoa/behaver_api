@@ -23,10 +23,10 @@ class Member
     end
 
     # Get Children
-    def self.find(role)
+     def self.role(role)
       results = DB.exec(
       <<-SQL
-        SELECT *
+        SELECT name
         FROM members
         WHERE role='child'
       SQL
