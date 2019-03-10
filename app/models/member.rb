@@ -22,6 +22,28 @@ class Member
       end
     end
 
+    # Get Children
+    def self.find(role)
+      results = DB.exec(
+      <<-SQL
+        SELECT *
+        FROM members
+        WHERE role='child'
+      SQL
+      )
+      results.map do |result|
+        {
+          'member_id' => result['member_id'].to_i,
+          'name' => result['name'],
+          'role' => result['role'],
+          'pin' => result['pin'].to_i,
+          'family_id' => result['family_id'].to_i
+        }
+      end
+    end
+
+
+
     # Show
     def self.find(id)
       results = DB.exec(
@@ -48,7 +70,7 @@ class Member
           INSERT INTO members
             (name, role, pin, family_id)
           VALUES
-            ('#{opts["name"]}', '#{opts["role"]}', #{opts["pin"]}, '#{opts["family_id"]}')
+            ('#{opts["name"]}', '#{opts["role"]}', '#{opts["pin"]}', '#{opts["family_id"]}')
           RETURNING member_id, name, role, pin, family_id
         SQL
       )

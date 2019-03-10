@@ -8,6 +8,10 @@ class MembersController < ApplicationController
     render json: Member.find(params['id'])
   end
 
+  def children
+    render json: Member.all
+  end
+
   def create
     render json: Member.create(params['member'])
   end

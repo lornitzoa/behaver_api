@@ -6,12 +6,16 @@ Rails.application.routes.draw do
       post '/login', to: 'users#login'
 
       post '/register', to: 'users#register'
+
+      put '/update', to: 'users#update'
     end
   end
 
 # ------------------------
-#      POSTS ROUTES      #
+#      MEMBER ROUTES    #
 # ------------------------
+
+  get '/members/:role', to: 'members#children'
 
   get '/members', to: 'members#index'
 
