@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   resources :users
+  resources :tasks
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   resources :users do
     collection do
@@ -54,6 +55,22 @@ Rails.application.routes.draw do
   delete '/tasks/:id', to: 'tasks#delete'
 
   put '/tasks/:id', to: 'tasks#update'
+
+  # ------------------------
+  #     ASSIGN TASK ROUTES    #
+  # ------------------------
+
+  resources :tasks do
+    collection do
+      get '/assignments/:child_id', to: 'tasks#indexAssignments'
+
+      post '/assignments', to: 'tasks#assignTask'
+
+      delete '/assignments/:id', to: 'tasks#deleteAssignedTask'
+
+      put '/assignments/:id', to: 'tasks#updateAssignedTask'
+    end
+  end
 
 
 end
