@@ -5,7 +5,7 @@ class BehaviorsController < ApplicationController
   end
 
   def create
-    render json: Behavior.create(params['behavior'])
+    render json: Behavior.create(params['behavior'], params['targeted_for'])
   end
 
   def delete
@@ -13,7 +13,7 @@ class BehaviorsController < ApplicationController
   end
 
   def update
-    render json: Behavior.update(params['id'], params['behavior'])
+    render json: Behavior.update(params['id'], params['behavior'], params['targeted_for'])
   end
 
 end
