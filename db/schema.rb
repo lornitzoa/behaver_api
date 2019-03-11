@@ -33,7 +33,7 @@ ActiveRecord::Schema.define(version: 2019_03_08_183118) do
 
   create_table "behaviors", id: false, force: :cascade do |t|
     t.serial "id", null: false
-    t.string "behavior_name", limit: 30
+    t.string "behavior", limit: 30
     t.string "targeted_for", limit: 16
   end
 

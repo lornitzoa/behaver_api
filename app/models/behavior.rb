@@ -19,6 +19,21 @@ class Behavior
     end
   end
 
+  def self.find(id)
+    results = DB.exec(
+      <<-SQL
+        SELECT * FROM behaviors
+        WHERE id=#{id}
+      SQL
+    )
+    result = results.first
+    return {
+      'id' => result['id'],
+      'behavior' => result['behavior'],
+      'targeted_for' => result['targeted_for']
+    }
+  end
+
   def self.create(opts, opts2)
     results = DB.exec(
       <<-SQL
@@ -37,9 +52,14 @@ class Behavior
     }
   end
 
+  # Delete
   def self.delete(id)
-    results = DB.exec(`DELETE FROM behaviors WHERE id=#{id};`)
-    return { 'deleted' => true }
+    results = DB.exec(
+      <<-SQL
+        DELETE FROM behaviors WHERE id=#{id}
+      SQL
+    )
+    return { 'deleted' => true}
   end
 
   def self.update(id, opts, opts2)
@@ -54,10 +74,10 @@ class Behavior
     )
     result = results.first
     return {
-      'id' => result['id'].to_i,
-      'behavior' => result['behavior'],
-      'targeted_for' => result['targeted_for']
-    }
+        'id' => result['id'].to_i,
+        'behavior' => result['behavior'],
+        'targeted_for' => result['targeted_for']
+      }
   end
 
 

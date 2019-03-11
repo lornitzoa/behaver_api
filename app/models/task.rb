@@ -37,10 +37,14 @@ class Task
         }
     end
 
-    # DELETE
+    # Delete
     def self.delete(id)
-      results = DB.exec(`DELETE FROM tasks WHERE id=#{id};`)
-      return {'deleted' => true}
+      results = DB.exec(
+        <<-SQL
+          DELETE FROM tasks WHERE id=#{id}
+        SQL
+      )
+      return { 'deleted' => true}
     end
 
     # UPDATE

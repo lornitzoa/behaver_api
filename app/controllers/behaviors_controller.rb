@@ -4,6 +4,10 @@ class BehaviorsController < ApplicationController
     render json: Behavior.all
   end
 
+  def show
+    render json: Behavior.find(params['id'])
+  end
+
   def create
     render json: Behavior.create(params['behavior'], params['targeted_for'])
   end
