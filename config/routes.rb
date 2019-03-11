@@ -27,4 +27,29 @@ Rails.application.routes.draw do
 
   put '/members/:id', to: 'members#update'
 
+  # ------------------------
+  #      Behavior Routes    #
+  # ------------------------
+
+  get '/behaviors', to: 'behaviors#index'
+
+  post '/behaviors', to: 'behaviors#create'
+
+  delete '/behaviors/:id', to: 'behaviors#delete'
+
+  put '/behaviors/:id', to: 'behaviors#update'
+
+  # ------------------------
+  #      TASK ROUTES    #
+  # ------------------------
+
+  get '/tasks', to: 'tasks#index'
+
+  post '/tasks', to: 'tasks#create'
+
+  delete '/tasks/:id', to: 'tasks#delete'
+
+  put '/tasks/:id', to: 'tasks#update'
+
+
 end
