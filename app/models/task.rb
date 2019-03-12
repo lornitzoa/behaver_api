@@ -27,7 +27,7 @@ class Task
           FROM assigned_tasks
           INNER JOIN tasks
             ON assigned_tasks.task_id = tasks.id
-          WHERE child_id=#{child_id}
+          WHERE child_id=#{child_id} AND assigned_tasks.completed=false
         SQL
       )
       results.map do |result|
@@ -89,6 +89,8 @@ class Task
 
     # Delete
     def self.delete(id)
+      puts id
+      puts '=======something!'
       results = DB.exec(
         <<-SQL
           DELETE FROM tasks WHERE id=#{id}
@@ -97,15 +99,15 @@ class Task
       return { 'deleted' => true}
     end
 
-    # Delete Assigned Task
-    def self.deleteAssignedTask(id)
-      results = DB.exec(
-        <<-SQL
-          DELETE FROM assigned_tasks WHERE id=#{id}
-        SQL
-      )
-      return { 'deleted': true }
-    end
+    # # Delete Assigned Task
+    # def self.deleteAssignedTask(id)
+    #   results = DB.exec(
+    #     <<-SQL
+    #       DELETE FROM assigned_tasks WHERE id=#{id}
+    #     SQL
+    #   )
+    #   return { 'deleted': true }
+    # end
 
     # UPDATE
     def self.update(id, opts)

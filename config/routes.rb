@@ -12,19 +12,7 @@ Rails.application.routes.draw do
     end
   end
 
-  # ------------------------
-  #      Behavior Routes    #
-  # ------------------------
 
-  get '/behaviors', to: 'behaviors#index'
-
-  get '/behaviors/:id', to: 'behaviors#show'
-
-  post '/behaviors', to: 'behaviors#create'
-
-  delete '/behaviors/:id', to: 'behaviors#delete'
-
-  put '/behaviors/:id', to: 'behaviors#update'
 
 # ------------------------
 #      MEMBER ROUTES    #
@@ -43,6 +31,19 @@ Rails.application.routes.draw do
   put '/members/:id', to: 'members#update'
 
 
+  # ------------------------
+  #      Behavior Routes    #
+  # ------------------------
+
+  get '/behaviors', to: 'behaviors#index'
+
+  get '/behaviors/:id', to: 'behaviors#show'
+
+  post '/behaviors', to: 'behaviors#create'
+
+  delete '/behaviors/:id', to: 'behaviors#delete'
+
+  put '/behaviors/:id', to: 'behaviors#update'
 
   # ------------------------
   #      TASK ROUTES    #
@@ -66,7 +67,7 @@ Rails.application.routes.draw do
 
       post '/assignments', to: 'tasks#assignTask'
 
-      delete '/assignments/:id', to: 'tasks#deleteAssignedTask'
+      # delete '/assignments/:id', to: 'tasks#deleteAssignedTask'
 
       put '/assignments/:id', to: 'tasks#updateAssignedTask'
     end

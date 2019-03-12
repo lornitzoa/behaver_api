@@ -16,7 +16,8 @@ class TasksController < ApplicationController
     render json: Task.assignTask(params['task'])
   end
 
-  def delete
+  def destroy
+    puts 'destroy method running'
     render json: Task.delete(params['id'])
   end
 
