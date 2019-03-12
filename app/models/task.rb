@@ -20,14 +20,14 @@ class Task
     end
 
     # Index Specific Child's Assignments
-    def self.childAssignments(child_id)
+    def self.indexAssignments
       results = DB.exec(
         <<-SQL
           SELECT assigned_tasks.*, tasks.task
           FROM assigned_tasks
           INNER JOIN tasks
             ON assigned_tasks.task_id = tasks.id
-          WHERE child_id=#{child_id} AND assigned_tasks.completed=false
+          WHERE assigned_tasks.completed=false
         SQL
       )
       results.map do |result|

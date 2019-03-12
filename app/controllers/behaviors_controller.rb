@@ -17,7 +17,7 @@ class BehaviorsController < ApplicationController
   end
 
   def update
-    render json: Behavior.update(params['id'], params['behavior'])
+    render json: Behavior.update(params['id'], params['behavior'], params['targeted_for'])
   end
 
 end

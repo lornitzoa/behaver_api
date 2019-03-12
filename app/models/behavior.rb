@@ -62,13 +62,13 @@ class Behavior
     return { 'deleted' => true}
   end
 
-  def self.update(id, opts)
+  def self.update(id, opts, opts2)
     puts opts
     results = DB.exec(
       <<-SQL
         UPDATE behaviors
         SET
-          behavior='#{opts["behavior"]}', targeted_for='#{opts["targeted_for"]}'
+          behavior='#{opts}', targeted_for='#{opts2}'
         WHERE id=#{id}
         RETURNING id, behavior, targeted_for
       SQL

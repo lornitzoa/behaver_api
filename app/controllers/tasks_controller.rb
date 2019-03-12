@@ -4,8 +4,8 @@ class TasksController < ApplicationController
     render json: Task.all
   end
 
-  def indexAssignments
-    render json: Task.childAssignments(params['child_id'])
+  def show
+    render json: Task.indexAssignments
   end
 
   def create

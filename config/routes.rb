@@ -63,11 +63,11 @@ Rails.application.routes.draw do
 
   resources :tasks do
     collection do
-      get '/assignments/:child_id', to: 'tasks#indexAssignments'
+      get '/assignments', to: 'tasks#indexAssignments'
 
       post '/assignments', to: 'tasks#assignTask'
 
-      # delete '/assignments/:id', to: 'tasks#deleteAssignedTask'
+      delete '/assignments/:id', to: 'tasks#deleteAssignedTask'
 
       put '/assignments/:id', to: 'tasks#updateAssignedTask'
     end
