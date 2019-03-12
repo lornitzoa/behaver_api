@@ -115,4 +115,16 @@ Rails.application.routes.draw do
     end
   end
 
+  # ---------------------------------------------
+#      SCORES ROUTES    #
+  # ---------------------------------------------
+
+  get '/scores', to: 'scores#index'
+
+  post '/scores', to: 'scores#create'
+
+  delete '/scores/:id', to: 'scores#delete'
+
+  put '/scores/:id', to: 'scores#update'
+
 end

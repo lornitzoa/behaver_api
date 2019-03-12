@@ -64,7 +64,7 @@ ActiveRecord::Schema.define(version: 2019_03_08_183118) do
   end
 
   create_table "scores", id: false, force: :cascade do |t|
-    t.integer "user_id"
+    t.integer "member_id"
     t.integer "behavior_points"
     t.integer "tasks_completed"
     t.integer "task_points"
