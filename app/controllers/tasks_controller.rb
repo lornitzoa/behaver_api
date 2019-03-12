@@ -9,7 +9,7 @@ class TasksController < ApplicationController
   end
 
   def create
-    render json: Task.create(params['task'])
+    render json: Task.create(params['task'], params['family_id'])
   end
 
   def assignTask
@@ -26,11 +26,11 @@ class TasksController < ApplicationController
   end
 
   def update
-    render json: Task.update(params['id'], params['task'])
+    render json: Task.update(params['id'], params['task'], params['family_id'])
   end
 
   def updateAssignedTask
-    render json: Task.updateAssignedTask(params['id'], params['task'])
+    render json: Task.updateAssignedTask(params['id'], params['task'], params['family_id'])
   end
 
 end

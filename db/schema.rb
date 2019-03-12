@@ -16,16 +16,18 @@ ActiveRecord::Schema.define(version: 2019_03_08_183118) do
   enable_extension "plpgsql"
 
   create_table "assigned_behaviors", id: false, force: :cascade do |t|
+    t.serial "id", null: false
     t.integer "child_id"
     t.integer "behavior_id"
     t.integer "points"
   end
 
   create_table "assigned_tasks", id: false, force: :cascade do |t|
+    t.serial "id", null: false
     t.integer "child_id"
     t.integer "task_id"
-    t.string "frequency", limit: 20
-    t.string "time_of_day", limit: 6
+    t.string "frequency", limit: 30
+    t.string "time_of_day", limit: 30
     t.integer "points"
     t.boolean "required"
     t.boolean "completed"
@@ -35,6 +37,7 @@ ActiveRecord::Schema.define(version: 2019_03_08_183118) do
     t.serial "id", null: false
     t.string "behavior", limit: 30
     t.string "targeted_for", limit: 16
+    t.integer "family_id"
   end
 
   create_table "members", id: false, force: :cascade do |t|
@@ -46,15 +49,17 @@ ActiveRecord::Schema.define(version: 2019_03_08_183118) do
   end
 
   create_table "reinforcements", id: false, force: :cascade do |t|
-    t.integer "id"
+    t.serial "id", null: false
     t.string "reinforcement", limit: 30
+    t.integer "family_id"
   end
 
   create_table "reinforcements_available_to", id: false, force: :cascade do |t|
+    t.serial "id", null: false
     t.integer "child_id"
     t.integer "reinforcement_id"
-    t.integer "worth"
-    t.string "availability_freq", limit: 20
+    t.integer "points"
+    t.string "availability_freq", limit: 16
     t.boolean "available"
   end
 
@@ -69,6 +74,7 @@ ActiveRecord::Schema.define(version: 2019_03_08_183118) do
   create_table "tasks", id: false, force: :cascade do |t|
     t.serial "id", null: false
     t.string "task", limit: 30
+    t.integer "family_id"
   end
 
   create_table "users", force: :cascade do |t|

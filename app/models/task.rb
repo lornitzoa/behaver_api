@@ -10,16 +10,21 @@ class Task
 
     # Index
     def self.all
-      results = DB.exec('SELECT * FROM tasks;')
+      results = DB.exec(
+        <<-SQL
+          SELECT * FROM tasks
+        SQL
+      )
       results.map do |result|
         {
           'id' => result['id'].to_i,
-          'task' => result['task']
+          'task' => result['task'],
+          'family_id' => result['family_id']
         }
       end
     end
 
-    # Index Specific Child's Assignments
+    # Index Assigned Tasks
     def self.indexAssignments
       results = DB.exec(
         <<-SQL
@@ -46,20 +51,21 @@ class Task
     end
 
     # Create
-    def self.create(opts)
+    def self.create(opts,opts2)
       results = DB.exec(
         <<-SQL
           INSERT INTO tasks
-            (task)
+            (task, family_id)
           VALUES
-            ('#{opts}')
-          RETURNING id, task
+            ('#{opts}', #{opts2})
+          RETURNING id, task, family_id
         SQL
       )
       result = results.first
       return {
           'id' => result['id'].to_i,
-          'task' => result['task']
+          'task' => result['task'],
+          'family_id' => result['family_id']
         }
     end
 
@@ -89,8 +95,6 @@ class Task
 
     # Delete
     def self.delete(id)
-      puts id
-      puts '=======something!'
       results = DB.exec(
         <<-SQL
           DELETE FROM tasks WHERE id=#{id}
@@ -99,31 +103,32 @@ class Task
       return { 'deleted' => true}
     end
 
-    # # Delete Assigned Task
-    # def self.deleteAssignedTask(id)
-    #   results = DB.exec(
-    #     <<-SQL
-    #       DELETE FROM assigned_tasks WHERE id=#{id}
-    #     SQL
-    #   )
-    #   return { 'deleted': true }
-    # end
+    # Delete Assigned Task
+    def self.deleteAssignedTask(id)
+      results = DB.exec(
+        <<-SQL
+          DELETE FROM assigned_tasks WHERE id=#{id}
+        SQL
+      )
+      return { 'deleted': true }
+    end
 
     # UPDATE
-    def self.update(id, opts)
+    def self.update(id, opts, opts2)
       results = DB.exec(
         <<-SQL
           UPDATE tasks
           SET
-            task='#{opts}'
+            task='#{opts}', family_id=#{opts2}
           WHERE id=#{id}
-          RETURNING id, task
+          RETURNING id, task, family_id
         SQL
       )
       result = results.first
       return {
         'id' => result['id'],
-        'task' => result['task']
+        'task' => result['task'],
+        'family_id' => result['family_id']
       }
     end
 
