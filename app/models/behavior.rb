@@ -35,7 +35,8 @@ class Behavior
       {
         'id' => result['id'].to_i,
         'child_id' => result['child_id'].to_i,
-        'behavior_id' => result['behavior_id'].to_i,
+        'behavior' => result['behavior'],
+        'targeted_for' => result['targeted_for'],
         'points' => result['points'].to_i,
       }
     end
@@ -74,7 +75,7 @@ class Behavior
       'id' => result['id'].to_i,
       'behavior' => result['behavior'],
       'targeted_for' => result['targeted_for'],
-      'family_id' => result['family_id']
+      'family_id' => result['family_id'].to_i
     }
   end
 

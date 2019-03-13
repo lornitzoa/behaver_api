@@ -39,7 +39,6 @@ class Task
         {
           'id' => result['id'].to_i,
           'child_id' => result['child_id'].to_i,
-          'task_id' => result['task_id'].to_i,
           'task_name' => result['task'],
           'frequency' => result['frequency'],
           'time_of_day' => result['time_of_day'],
