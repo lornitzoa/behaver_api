@@ -23,24 +23,23 @@ class Behavior
 
   # Index Assigned Behaviors
   def self.indexAssignments
-    results = DB.exec(
-      <<-SQL
-        SELECT assigned_behaviors.*, behaviors.behavior, behaviors.targeted_for
-        FROM assigned_behaviors
-        INNER JOIN behaviors
-          ON assigned_behaviors.behavior_id = behaviors.id
-      SQL
-    )
-    results.map do |result|
-      {
-        'id' => result['id'].to_i,
-        'child_id' => result['child_id'].to_i,
-        'behavior' => result['behavior'],
-        'targeted_for' => result['targeted_for'],
-        'points' => result['points'].to_i,
-      }
-    end
+  results = DB.exec(
+    <<-SQL
+      SELECT assigned_behaviors.*, behaviors.behavior, behaviors.targeted_for
+      FROM assigned_behaviors
+      INNER JOIN behaviors
+        ON assigned_behaviors.behavior_id = behaviors.id
+    SQL
+  )
+  results.map do |result|
+    {
+      'id' => result['id'].to_i,
+      'child_id' => result['child_id'].to_i,
+      'behavior' => result['behavior'],
+      'points' => result['points'].to_i,
+    }
   end
+end
 
   # # Show
   # def self.find(id)
@@ -83,10 +82,9 @@ class Behavior
   def self.assignBehaviors(opts)
     results = DB.exec(
       <<-SQL
-        INSERT INTO assigned_behaviors
-          (child_id, behavior_id, points)
-        VALUES
-          (#{opts['child_id']}, #{opts['behavior_id']}, #{opts['points']})
+      INSERT INTO assigned_behaviors
+        (child_id, behavior_id, points)
+      VALUES (#{opts["child_id"]}, #{opts["behavior_id"]}, #{opts["points"]})
         RETURNING id, child_id, behavior_id, points
       SQL
     )
@@ -147,6 +145,7 @@ class Behavior
         UPDATE assigned_behaviors
         SET
           child_id=#{opts['child_id']}, behavior_id=#{opts['behavior_id']}, points=#{opts['points']}
+        WHERE id=#{id}
         RETURNING id, child_id, behavior_id, points
       SQL
     )

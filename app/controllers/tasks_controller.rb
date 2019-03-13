@@ -30,7 +30,7 @@ class TasksController < ApplicationController
   end
 
   def updateAssignedTask
-    render json: Task.updateAssignedTask(params['id'], params['task'], params['family_id'])
+    render json: Task.updateAssignedTask(params['id'], params['task'])
   end
 
 end
