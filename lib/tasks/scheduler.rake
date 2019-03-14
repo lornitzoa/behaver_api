@@ -1,5 +1,5 @@
 desc "This task is called by the Heroku scheduler add-on"
-task :rest_daily_scores => :environment do
+task :reset_daily_scores => :environment do
   puts "Resetting Daily Scores..."
   Score.resetDailyScores
   puts "done."
