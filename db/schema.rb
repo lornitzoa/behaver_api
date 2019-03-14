@@ -48,11 +48,6 @@ ActiveRecord::Schema.define(version: 2019_03_08_183118) do
     t.integer "family_id"
   end
 
-  create_table "recurring_type", id: false, force: :cascade do |t|
-    t.serial "id", null: false
-    t.string "type", limit: 30
-  end
-
   create_table "reinforcements", id: false, force: :cascade do |t|
     t.serial "id", null: false
     t.string "reinforcement", limit: 30
@@ -69,10 +64,18 @@ ActiveRecord::Schema.define(version: 2019_03_08_183118) do
   end
 
   create_table "scores", id: false, force: :cascade do |t|
+    t.serial "id", null: false
+    t.date "date"
     t.integer "member_id"
-    t.integer "behavior_points"
-    t.integer "tasks_completed"
-    t.integer "task_points"
+    t.integer "bx_points_earned"
+    t.integer "req_tasks_complete"
+    t.integer "req_tasks_assigned"
+    t.integer "bonus_tasks_complete"
+    t.integer "bonus_tasks_assigned"
+    t.integer "task_points_earned"
+    t.integer "total_points_earned"
+    t.integer "points_used"
+    t.integer "points_available"
     t.integer "stashed_cash"
   end
 

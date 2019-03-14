@@ -10,6 +10,12 @@ class Score
 
   def self.resetDailyScores
     puts '============resetting scores========='
+    getChildren = DB.exec('SELECT * FROM members WHERE role="child"')
+    getChildren.map do |child|
+      return {
+        'id' => child['id'],
+        'name' => child['name']
+      }
   end
 
   # Index
@@ -17,10 +23,18 @@ class Score
     results = DB.exec('SELECT * FROM scores;')
     results.map do |result|
       {
+        'id' => result['id'].to_i,
+        'date' => result['date'],
         'member_id' => result['member_id'].to_i,
-        'behavior_points' => result['behavior_points'].to_i,
-        'tasks_completed' => result['tasks_completed'].to_i,
-        'task_points' => result['task_points'].to_i,
+        'bx_points_earned' => result['bx_points_earned'].to_i,
+        'req_tasks_complete' => result['req_tasks_complete'].to_i,
+        'req_tasks_assigned' => result['req_tasks_assigned'].to_i,
+        'bonus_tasks_complete' => result['bonus_tasks_complete'].to_i,
+        'bonus_tasks_assigned' => result['bonus_tasks_assigned'].to_i,
+        'task_points_earned' => result['task_points_earned'].to_i,
+        'total_points_earned' => result['total_points_earned'].to_i,
+        'points_used' => result['points_used'].to_i,
+        'points_available' => result['points_available'].to_i,
         'stashed_cash' => result['stashed_cash'].to_i
       }
     end
@@ -31,18 +45,26 @@ class Score
     results = DB.exec(
       <<-SQL
         INSERT INTO scores
-          (member_id, behavior_points, tasks_completed, task_points, stashed_cash)
+          (date, member_id, bx_points_earned, req_tasks_complete, req_tasks_assigned, bonus_tasks_complete, bonus_tasks_assigned, task_points_earned, total_points_earned, points_used, points_available, stashed_cash)
         VALUES
-          (#{opts['member_id']}, #{opts['behavior_points']},#{opts['tasks_completed']},#{opts['task_points']},#{opts['stashed_cash']})
-        RETURNING member_id, behavior_points, tasks_completed, task_points, stashed_cash
+          ('#{opts['date']}', #{opts['member_id']}, #{opts['bx_points_earned']}, #{opts['req_tasks_complete']}, #{opts['req_tasks_assigned']}, #{opts['bonus_tasks_complete']}, #{opts['bonus_tasks_assigned']}, #{opts['task_points_earned']}, #{opts['total_points_earned']}, #{opts['points_used']}, #{opts['points_available']}, #{opts['stashed_cash']})
+        RETURNING id, date, member_id, bx_points_earned, req_tasks_complete, req_tasks_assigned, bonus_tasks_complete, bonus_tasks_assigned, task_points_earned, total_points_earned, points_used, points_available, stashed_cash
       SQL
     )
     result = results.first
     return {
+      'id' => result['id'].to_i,
+      'date' => result['date'],
       'member_id' => result['member_id'].to_i,
-      'behavior_points' => result['behavior_points'].to_i,
-      'tasks_completed' => result['tasks_completed'].to_i,
-      'task_points' => result['task_points'].to_i,
+      'bx_points_earned' => result['bx_points_earned'].to_i,
+      'req_tasks_complete' => result['req_tasks_complete'].to_i,
+      'req_tasks_assigned' => result['req_tasks_assigned'].to_i,
+      'bonus_tasks_complete' => result['bonus_tasks_complete'].to_i,
+      'bonus_tasks_assigned' => result['bonus_tasks_assigned'].to_i,
+      'task_points_earned' => result['task_points_earned'].to_i,
+      'total_points_earned' => result['total_points_earned'].to_i,
+      'points_used' => result['points_used'].to_i,
+      'points_available' => result['points_available'].to_i,
       'stashed_cash' => result['stashed_cash'].to_i
     }
   end
@@ -59,17 +81,35 @@ class Score
       <<-SQL
         UPDATE scores
         SET
-          member_id=#{opts['member_id']}, behavior_points=#{opts['behavior_points']}, tasks_completed=#{opts['tasks_completed']}, task_points=#{opts['task_points']}, stashed_cash=#{opts['stashed_cash']}
+        (#{opts['member_id']},
+        #{opts['bx_points_earned']},
+        #{opts['req_tasks_complete']},
+        #{opts['req_tasks_assigned']},
+        #{opts['bonus_tasks_complete']},
+        #{opts['bonus_tasks_assigned']},
+        #{opts['task_points_earned']},
+        #{opts['total_points_earned']},
+        #{opts['points_used']},
+        #{opts['points_available']},
+        #{opts['stashed_cash']})
         RETURNING
-          member_id, behavior_points, tasks_completed, task_points, stashed_cash
+          id, member_id, bx_points_earned, req_tasks_complete, req_tasks_assigned, bonus_tasks_complete, bonus_tasks_assigned, task_points_earned, total_points_earned, points_used, points_available, stashed_cash
       SQL
     )
     result = results.first
     return {
+      'id' => result[id].to_i,
+      'date' => result['date'],
       'member_id' => result['member_id'].to_i,
-      'behavior_points' => result['behavior_points'].to_i,
-      'tasks_completed' => result['tasks_completed'].to_i,
-      'task_points' => result['task_points'].to_i,
+      'bx_points_earned' => result['bx_points_earned'].to_i,
+      'req_tasks_complete' => result['req_tasks_complete'].to_i,
+      'req_tasks_assigned' => result['req_tasks_assigned'].to_i,
+      'bonus_tasks_complete' => result['bonus_tasks_complete'].to_i,
+      'bonus_tasks_assigned' => result['bonus_tasks_assigned'].to_i,
+      'task_points_earned' => result['task_points_earned'].to_i,
+      'total_points_earned' => result['total_points_earned'].to_i,
+      'points_used' => result['points_used'].to_i,
+      'points_available' => result['points_available'].to_i,
       'stashed_cash' => result['stashed_cash'].to_i
     }
   end
