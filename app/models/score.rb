@@ -13,7 +13,7 @@ class Score
     getChildren = DB.exec('SELECT * FROM members WHERE role="child"')
     getChildren.map do |child|
       return {
-        'id' => child['id'],
+        'member_id' => child['member_id'],
         'name' => child['name']
       }
     end
