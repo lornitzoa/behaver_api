@@ -112,6 +112,7 @@ class Reinforcement
         UPDATE reinforcements
         SET
           reinforcement='#{opts}', family_id=#{opts2}
+        WHERE id=#{id}
         RETURNING id, reinforcement, family_id
       SQL
     )

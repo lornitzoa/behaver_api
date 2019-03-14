@@ -8,6 +8,10 @@ class Score
     DB = PG.connect(:host => 'localhost', :port => 5432, :dbname => 'behaver_api_development')
   end
 
+  def self.resetDailyScores
+    puts '============resetting scores========='
+  end
+
   # Index
   def self.all
     results = DB.exec('SELECT * FROM scores;')
