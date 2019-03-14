@@ -10,12 +10,11 @@ class Score
 
   def self.resetDailyScores
     puts '============resetting scores========='
-    getChildren = DB.exec('SELECT * FROM scores')
+    getChildren = DB.exec('SELECT * FROM members WHERE role="child";')
     getChildren.map do |child|
       return {
-        'id' => child['id'],
-        'date' => child['date'],
-        'member_id' => child['member_id']
+        'member_id' => child['member_id'],
+        'name' => child['name']
       }
     end
   end
