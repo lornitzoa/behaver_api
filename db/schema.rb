@@ -64,8 +64,8 @@ ActiveRecord::Schema.define(version: 2019_03_08_183118) do
     t.integer "child_id"
     t.integer "reinforcement_id"
     t.integer "points"
-    t.string "availability_freq", limit: 16
-    t.boolean "available"
+    t.integer "daily_allotment"
+    t.integer "no_available"
   end
 
   create_table "scores", id: false, force: :cascade do |t|

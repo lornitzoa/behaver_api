@@ -37,8 +37,8 @@ class Reinforcement
         'reinforcement_id' => result['reinforcement_id'].to_i,
         'reinforcement' => result['reinforcement'],
         'points' => result['points'].to_i,
-        'availability_freq' => result['availability_freq'],
-        'available' => result['available'],
+        'daily_allotment' => result['daily_allotment'],
+        'no_available' => result['no_available'],
       }
     end
   end
@@ -67,10 +67,10 @@ class Reinforcement
     results = DB.exec(
       <<-SQL
         INSERT INTO reinforcements_available_to
-          (child_id, reinforcement_id, points, availability_freq, available)
+          (child_id, reinforcement_id, points, daily_allotment, no_available)
         VALUES
-          (#{opts['child_id']}, #{opts['reinforcement_id']}, #{opts['points']}, '#{opts['availability_freq']}', #{opts['available']})
-        RETURNING id, child_id, reinforcement_id, points, availability_freq, available
+          (#{opts['child_id']}, #{opts['reinforcement_id']}, #{opts['points']}, '#{opts['daily_allotment']}', #{opts['no_available']})
+        RETURNING id, child_id, reinforcement_id, points, daily_allotment, no_available
       SQL
     )
     result = results.first
@@ -79,8 +79,8 @@ class Reinforcement
       'child_id' => result['child_id'].to_i,
       'reinforcement_id' => result['reinforcement_id'].to_i,
       'points' => result['points'].to_i,
-      'availability_freq' => result['availability_freq'],
-      'available' => result['available'],
+      'daily_allotment' => result['daily_allotment'],
+      'no_available' => result['no_available']
     }
   end
 
@@ -124,9 +124,9 @@ class Reinforcement
       <<-SQL
         UPDATE reinforcements_available_to
         SET
-          child_id=#{opts['child_id']}, reinforcement_id=#{opts['reinforcement_id']}, points=#{opts['points']}, availability_freq='#{opts['availability_freq']}', available=#{opts['available']}
+          child_id=#{opts['child_id']}, reinforcement_id=#{opts['reinforcement_id']}, points=#{opts['points']}, daily_allotment='#{opts['daily_allotment']}', no_available=#{opts['no_available']}
         WHERE id=#{id}
-        RETURNING id, child_id, reinforcement_id, points, availability_freq, available
+        RETURNING id, child_id, reinforcement_id, points, daily_allotment, no_available
       SQL
     )
     result = results.first
@@ -135,8 +135,8 @@ class Reinforcement
       'child_id' => result['child_id'].to_i,
       'reinforcement_id' => result['reinforcement_id'].to_i,
       'points' => result['points'].to_i,
-      'availability_freq' => result['availability_freq'],
-      'available' => result['available'],
+      'daily_allotment' => result['daily_allotment'],
+      'no_available' => result['no_available']
     }
   end
 
