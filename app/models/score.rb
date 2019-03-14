@@ -16,6 +16,7 @@ class Score
         'id' => child['id'],
         'name' => child['name']
       }
+    end
   end
 
   # Index
