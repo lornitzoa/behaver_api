@@ -1,3 +1,4 @@
+require 'date'
 class Task
 
   # Connections
@@ -15,6 +16,8 @@ class Task
           SELECT * FROM tasks
         SQL
       )
+      puts "==============================="
+      puts results
       results.map do |result|
         {
           'id' => result['id'].to_i,
@@ -36,16 +39,40 @@ class Task
         SQL
       )
       results.map do |result|
-        {
-          'id' => result['id'].to_i,
-          'child_id' => result['child_id'].to_i,
-          'task_name' => result['task'],
-          'frequency' => result['frequency'],
-          'time_of_day' => result['time_of_day'],
-          'points' => result['points'],
-          'required' => result['required'],
-          'completed' => result['completed'],
-        }
+        if result["frequency"] === "weekdays" && (DateTime.now.to_date.wday >= 1 || DateTime.now.to_date.wday <= 5)
+          {
+            'id' => result['id'].to_i,
+            'child_id' => result['child_id'].to_i,
+            'task_name' => result['task'],
+            'frequency' => result['frequency'],
+            'time_of_day' => result['time_of_day'],
+            'points' => result['points'],
+            'required' => result['required'],
+            'completed' => result['completed'],
+          }
+        elsif result["frequency"] === "weekends" && (DateTime.now.to_date.wday === 0 || DateTime.now.to_date.wday === 6)
+          {
+            'id' => result['id'].to_i,
+            'child_id' => result['child_id'].to_i,
+            'task_name' => result['task'],
+            'frequency' => result['frequency'],
+            'time_of_day' => result['time_of_day'],
+            'points' => result['points'],
+            'required' => result['required'],
+            'completed' => result['completed'],
+          }
+        elsif result["frequency"] === "daily"
+          {
+            'id' => result['id'].to_i,
+            'child_id' => result['child_id'].to_i,
+            'task_name' => result['task'],
+            'frequency' => result['frequency'],
+            'time_of_day' => result['time_of_day'],
+            'points' => result['points'],
+            'required' => result['required'],
+            'completed' => result['completed'],
+          }
+        end
       end
     end
 

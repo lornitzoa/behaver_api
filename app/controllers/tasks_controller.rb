@@ -1,6 +1,7 @@
 class TasksController < ApplicationController
 
   def index
+    puts "======================================="
     render json: Task.all
   end
 

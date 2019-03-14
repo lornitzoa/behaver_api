@@ -48,6 +48,11 @@ ActiveRecord::Schema.define(version: 2019_03_08_183118) do
     t.integer "family_id"
   end
 
+  create_table "recurring_type", id: false, force: :cascade do |t|
+    t.serial "id", null: false
+    t.string "type", limit: 30
+  end
+
   create_table "reinforcements", id: false, force: :cascade do |t|
     t.serial "id", null: false
     t.string "reinforcement", limit: 30
@@ -59,8 +64,8 @@ ActiveRecord::Schema.define(version: 2019_03_08_183118) do
     t.integer "child_id"
     t.integer "reinforcement_id"
     t.integer "points"
-    t.string "availability_freq", limit: 16
-    t.boolean "available"
+    t.integer "daily_allotment"
+    t.integer "no_available"
   end
 
   create_table "scores", id: false, force: :cascade do |t|
@@ -82,6 +87,10 @@ ActiveRecord::Schema.define(version: 2019_03_08_183118) do
     t.string "password_digest"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "week_days", id: false, force: :cascade do |t|
+    t.integer "day_no"
   end
 
 end
