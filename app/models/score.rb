@@ -19,7 +19,7 @@ class Score
     )
     puts '----------------mapping------------'
     getChildren.map do |child|
-      puts child.member_id
+      puts child['child_id'].to_i
     end
 
   end
