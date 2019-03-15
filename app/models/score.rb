@@ -24,23 +24,10 @@ class Score
       SQL
     )
     puts '----------------mapping------------'
-    results.map do |result|
-      return {
-        'id' => result['id'].to_i,
-        'date' => result['date'],
-        'member_id' => result['member_id'].to_i,
-        'bx_points_earned' => result['bx_points_earned'].to_i,
-        'req_tasks_complete' => result['req_tasks_complete'].to_i,
-        'req_tasks_assigned' => result['req_tasks_assigned'].to_i,
-        'bonus_tasks_complete' => result['bonus_tasks_complete'].to_i,
-        'bonus_tasks_assigned' => result['bonus_tasks_assigned'].to_i,
-        'task_points_earned' => result['task_points_earned'].to_i,
-        'total_points_earned' => result['total_points_earned'].to_i,
-        'points_used' => result['points_used'].to_i,
-        'points_available' => result['points_available'].to_i,
-        'stashed_cash' => result['stashed_cash'].to_i
-      }
-    end
+
+    puts results
+
+
 
   end
 
