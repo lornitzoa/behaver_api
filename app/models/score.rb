@@ -1,4 +1,5 @@
 require 'date'
+require 'json'
 
 class Score
 
@@ -11,47 +12,55 @@ class Score
   end
 
   def self.resetDailyScores
-    getChildren = DB.exec(
-      <<-SQL
-        SELECT *
-        FROM members
-        WHERE role='child'
-      SQL
-    )
-    getChildren.map do |child|
-      puts child['member_id']
-      puts today = DateTime.now.to_date
-      puts yesterday = DateTime.now.prev_day.to_date
-      prevScores = DB.exec(
-        <<-SQL
-          SELECT *
-          FROM scores
-          WHERE date='#{yesterday}' AND member_id=#{child['member_id']}
-        SQL
-      )
-      prevScores.map do |prevScore|
-        puts prevScore['points_available']
-        puts prevScore['stashed_cash']
-        newStash = prevScore['points_available'].to_i + prevScore['stashed_cash'].to_i
+   getChildren = DB.exec(
+     <<-SQL
+       SELECT *
+       FROM members
+       WHERE role='child'
+     SQL
+   )
+   getChildren.map do |child|
+     puts child['member_id']
+     puts today = DateTime.now.to_date
+     puts yesterday = DateTime.now.prev_day.to_date
+     prevScores = DB.exec(
+       <<-SQL
+         SELECT *
+         FROM scores
+         WHERE date='#{yesterday}' AND member_id=#{child['member_id']}
+       SQL
+     )
+     prevScores.map do |prevScore|
+       puts prevScore['points_available']
+       puts prevScore['stashed_cash']
+       newStash = prevScore['points_available'].to_i + prevScore['stashed_cash'].to_i
 
-        resetScores = DB.exec(
-          <<-SQL
-          INSERT INTO scores
-            (date, member_id, bx_points_earned, req_tasks_complete, req_tasks_assigned, bonus_tasks_complete, bonus_tasks_assigned, task_points_earned, total_points_earned, points_used, points_available, stashed_cash)
-          VALUES
-            ('#{today}', #{child['member_id']}, 0, 0, 10, 0, 5, 0, 0, 0, 0, #{newStash})
-          RETURNING id, date, member_id, bx_points_earned, req_tasks_complete, req_tasks_assigned, bonus_tasks_complete, bonus_tasks_assigned, task_points_earned, total_points_earned, points_used, points_available, stashed_cash
-          SQL
-        )
-      end
+       resetScores = DB.exec(
+         <<-SQL
+         INSERT INTO scores
+           (date, member_id, bx_points_earned, req_tasks_complete, req_tasks_assigned, bonus_tasks_complete, bonus_tasks_assigned, task_points_earned, total_points_earned, points_used, points_available, stashed_cash)
+         VALUES
+           ('#{today}', #{child['member_id']}, 0, 0, 10, 0, 5, 0, 0, 0, 0, #{newStash})
+         RETURNING id, date, member_id, bx_points_earned, req_tasks_complete, req_tasks_assigned, bonus_tasks_complete, bonus_tasks_assigned, task_points_earned, total_points_earned, points_used, points_available, stashed_cash
+         SQL
+       )
+     end
 
-    end
+   end
 
-  end
+ end
+
 
   # Index
   def self.all
-    results = DB.exec('SELECT * FROM scores;')
+    today = DateTime.now.to_date
+    results = DB.exec(
+      <<-SQL
+        SELECT *
+        FROM scores
+        WHERE date='#{today}'
+      SQL
+    )
     results.map do |result|
       {
         'id' => result['id'].to_i,
