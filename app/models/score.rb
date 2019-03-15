@@ -10,7 +10,7 @@ class Score
 
   def self.resetDailyScores
     puts '============resetting scores========='
-    dateNow = Date.now.to_date
+    dateNow = DateTime.now.to_date
     results = DB.exec(
       <<-SQL
         INSERT INTO scores
