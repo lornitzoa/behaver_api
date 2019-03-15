@@ -9,17 +9,17 @@ class Score
   end
 
   def self.resetDailyScores
-    puts '============resetting scores========='
+    puts '============reetting scores========='
     getChildren = DB.exec(
       <<-SQL
         SELECT *
         FROM members
-        WHERE role="child"
+        WHERE role='child'
       SQL
     )
     puts '----------------mapping------------'
     puts result
-    
+
   end
 
   # Index
