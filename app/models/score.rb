@@ -15,22 +15,11 @@ class Score
         SELECT *
         FROM members
         WHERE role="child"
-        RETURNING member_id
       SQL
     )
     puts '----------------mapping------------'
-    dateNow = Date.now.to_date
-    getChildren.map do |result|
-      resetScore = DB.exec(
-        <<-SQL
-          INSERT INTO scores
-            (date, member_id, bx_points_earned, req_tasks_complete, req_tasks_assigned, bonus_tasks_complete, bonus_tasks_assigned, task_points_earned, total_points_earned, points_used, points_available, stashed_cash)
-          VALUES
-            (#{dateNow}, #{result["member_id"]}, 0, 0, 30, 0, 10, 0, 0, 0, 0, 300)
-          RETURNING id, date, member_id, bx_points_earned, req_tasks_complete, req_tasks_assigned, bonus_tasks_complete, bonus_tasks_assigned, task_points_earned, total_points_earned, points_used, points_available, stashed_cash
-
-        SQL
-      )
+    puts result
+    
 
     end
   end
