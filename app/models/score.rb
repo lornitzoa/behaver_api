@@ -9,17 +9,18 @@ class Score
   end
 
   def self.resetDailyScores
-    puts '============reetting scores========='
+    puts '============resetting scores========='
     results = DB.exec(
       <<-SQL
         SELECT *
         FROM members
         WHERE role='child'
+        RETURNING member_id 
       SQL
     )
     puts '----------------mapping------------'
     results.map do |result|
-      puts result
+      puts result["member_id"]
     end
 
   end
