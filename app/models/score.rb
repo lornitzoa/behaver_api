@@ -115,6 +115,10 @@ class Score
     return { 'deleted': true}
   end
 
+  def self.patch(id, opts)
+    puts opts
+  end
+
   # Update
   def self.update(id, opts)
     results = DB.exec(

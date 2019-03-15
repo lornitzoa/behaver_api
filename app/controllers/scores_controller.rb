@@ -16,4 +16,8 @@ class ScoresController < ApplicationController
     render json: Score.update(params['member_id'],params['score'])
   end
 
+  def patch
+    render json: Score.patch(params['id'], params['score'])
+  end
+
 end
