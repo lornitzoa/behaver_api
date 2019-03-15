@@ -10,12 +10,13 @@ class Score
 
   def self.resetDailyScores
     puts '============resetting scores========='
+    dateNow = Date.now.to_date
     results = DB.exec(
       <<-SQL
         INSERT INTO scores
           (date, member_id, bx_points_earned, req_tasks_complete, req_tasks_assigned, bonus_tasks_complete, bonus_tasks_assigned, task_points_earned, total_points_earned, points_used, points_available, stashed_cash)
         VALUES
-          ('3/15/2019', 13, 500, 20, 30, 5, 10, 150, 650, 600, 50, 300)
+          (#{dateNow}, 13, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
         RETURNING id, date, member_id, bx_points_earned, req_tasks_complete, req_tasks_assigned, bonus_tasks_complete, bonus_tasks_assigned, task_points_earned, total_points_earned, points_used, points_available, stashed_cash
 
       SQL
