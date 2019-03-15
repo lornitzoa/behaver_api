@@ -20,8 +20,6 @@ class Score
     puts '----------------mapping------------'
     puts result
     
-
-    end
   end
 
   # Index
