@@ -10,7 +10,7 @@ class Score
 
   def self.resetDailyScores
     puts '============reetting scores========='
-    getChildren = DB.exec(
+    results = DB.exec(
       <<-SQL
         SELECT *
         FROM members
@@ -18,8 +18,8 @@ class Score
       SQL
     )
     puts '----------------mapping------------'
-    getChildren.map do |child|
-      puts child['child_id'].to_i
+    results.map do |result|
+      puts result
     end
 
   end
