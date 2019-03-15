@@ -11,23 +11,41 @@ class Score
   end
 
   def self.resetDailyScores
-    puts '============resetting scores========='
-    puts dateNow = DateTime.now
-    results = DB.exec(
+    getChildren = DB.exec(
       <<-SQL
-        INSERT INTO scores
-          (date, member_id, bx_points_earned, req_tasks_complete, req_tasks_assigned, bonus_tasks_complete, bonus_tasks_assigned, task_points_earned, total_points_earned, points_used, points_available, stashed_cash)
-        VALUES
-          ('#{dateNow}', 13, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
-        RETURNING id, date, member_id, bx_points_earned, req_tasks_complete, req_tasks_assigned, bonus_tasks_complete, bonus_tasks_assigned, task_points_earned, total_points_earned, points_used, points_available, stashed_cash
-
+        SELECT *
+        FROM members
+        WHERE role='child'
       SQL
     )
-    puts '----------------mapping------------'
+    getChildren.map do |child|
+      puts child['member_id']
+      puts today = DateTime.now.to_date
+      puts yesterday = DateTime.now.prev_day.to_date
+      prevScores = DB.exec(
+        <<-SQL
+          SELECT *
+          FROM scores
+          WHERE date='#{yesterday}' AND member_id=#{child['member_id']}
+        SQL
+      )
+      prevScores.map do |prevScore|
+        puts prevScore['points_available']
+        puts prevScore['stashed_cash']
+        newStash = prevScore['points_available'].to_i + prevScore['stashed_cash'].to_i
 
-    puts results
+        resetScores = DB.exec(
+          <<-SQL
+          INSERT INTO scores
+            (date, member_id, bx_points_earned, req_tasks_complete, req_tasks_assigned, bonus_tasks_complete, bonus_tasks_assigned, task_points_earned, total_points_earned, points_used, points_available, stashed_cash)
+          VALUES
+            ('#{today}', #{child['member_id']}, 0, 0, 10, 0, 5, 0, 0, 0, 0, #{newStash})
+          RETURNING id, date, member_id, bx_points_earned, req_tasks_complete, req_tasks_assigned, bonus_tasks_complete, bonus_tasks_assigned, task_points_earned, total_points_earned, points_used, points_available, stashed_cash
+          SQL
+        )
+      end
 
-
+    end
 
   end
 
