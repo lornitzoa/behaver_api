@@ -18,7 +18,9 @@ class Score
       SQL
     )
     puts '----------------mapping------------'
-    puts getChildren
+    getChildren.map do |child|
+      puts child.member_id
+    end
 
   end
 
