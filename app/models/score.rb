@@ -18,7 +18,7 @@ class Score
       SQL
     )
     puts '----------------mapping------------'
-    puts result
+    puts getChildren
 
   end
 
