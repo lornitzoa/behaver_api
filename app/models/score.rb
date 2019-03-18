@@ -31,9 +31,10 @@ class Score
        SQL
      )
      prevScores.map do |prevScore|
+       puts 'mapping prevScores'
        puts prevScore['points_available']
        puts prevScore['stashed_cash']
-       newStash = prevScore['points_available'].to_i + prevScore['stashed_cash'].to_i
+       newStash = 200 #prevScore['points_available'].to_i + prevScore['stashed_cash'].to_i
 
        resetScores = DB.exec(
          <<-SQL
@@ -116,7 +117,15 @@ class Score
   end
 
   def self.patch(id, opts)
-    puts opts
+    puts opts.keys[0].class
+    results = DB.exec(
+      <<-SQL
+        UPDATE scores
+        SET #{opts.keys[0]}=#{opts[opts.keys[0]]}
+        WHERE id=#{id}
+      SQL
+    )
+
   end
 
   # Update
