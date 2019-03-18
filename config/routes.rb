@@ -129,6 +129,6 @@ Rails.application.routes.draw do
 
   put '/scores/:id', to: 'scores#update'
 
-  patch '/scores/:id', to: 'scores#patch'
+  patch '/scores/:member_id', to: 'scores#patch'
 
 end

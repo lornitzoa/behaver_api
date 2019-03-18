@@ -116,15 +116,53 @@ class Score
     return { 'deleted': true}
   end
 
-  def self.patch(id, opts)
-    puts opts.keys[0].class
-    results = DB.exec(
+  # Patch
+  def self.patch(member_id, opts)
+    # puts opts.keys
+    today = DateTime.now.to_date
+    opts.keys.each { |opt|
+      puts opt
+      results = DB.exec(
+        <<-SQL
+          UPDATE scores
+          SET #{opt}=#{opt} + #{opts[opt]}
+          WHERE member_id=#{member_id} AND date='#{today}'
+        SQL
+      )
+    }
+    updateEarnedPoints = DB.exec(
       <<-SQL
         UPDATE scores
-        SET #{opts.keys[0]}=#{opts[opts.keys[0]]}
-        WHERE id=#{id}
+        SET total_points_earned=bx_points_earned + task_points_earned
+          WHERE member_id=#{member_id} AND date='#{today}'
       SQL
     )
+    updateAvailablePoints = DB.exec(
+      <<-SQL
+        UPDATE scores
+        SET points_available=total_points_earned - points_used
+        WHERE
+          member_id=#{member_id} AND date='#{today}'
+        RETURNING
+          id, member_id, bx_points_earned, req_tasks_complete, req_tasks_assigned, bonus_tasks_complete, bonus_tasks_assigned, task_points_earned, total_points_earned, points_used, points_available, stashed_cash
+      SQL
+    )
+    result = updateAvailablePoints.first
+    return {
+      'id' => result['id'].to_i,
+      'date' => result['date'],
+      'member_id' => result['member_id'].to_i,
+      'bx_points_earned' => result['bx_points_earned'].to_i,
+      'req_tasks_complete' => result['req_tasks_complete'].to_i,
+      'req_tasks_assigned' => result['req_tasks_assigned'].to_i,
+      'bonus_tasks_complete' => result['bonus_tasks_complete'].to_i,
+      'bonus_tasks_assigned' => result['bonus_tasks_assigned'].to_i,
+      'task_points_earned' => result['task_points_earned'].to_i,
+      'total_points_earned' => result['total_points_earned'].to_i,
+      'points_used' => result['points_used'].to_i,
+      'points_available' => result['points_available'].to_i,
+      'stashed_cash' => result['stashed_cash'].to_i
+    }
 
   end
 
