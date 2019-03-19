@@ -16,8 +16,6 @@ class Task
           SELECT * FROM tasks
         SQL
       )
-      puts "==============================="
-      puts results
       results.map do |result|
         {
           'id' => result['id'].to_i,
@@ -35,7 +33,7 @@ class Task
           FROM assigned_tasks
           INNER JOIN tasks
             ON assigned_tasks.task_id = tasks.id
-          WHERE assigned_tasks.completed=false
+
         SQL
       )
       results.map do |result|
@@ -121,6 +119,7 @@ class Task
 
     #Update Assigned Task
     def self.updateAssignedTask(id, opts)
+      puts opts
       results = DB.exec(
         <<-SQL
           UPDATE assigned_tasks
