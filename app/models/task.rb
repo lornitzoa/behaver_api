@@ -104,7 +104,9 @@ class Task
           RETURNING id, child_id, task_id, frequency, time_of_day, points, required, completed
         SQL
       )
+
       result = results.first
+      Score.updateAssignments(result['child_id'].to_i)
       return {
         'id' => result['id'].to_i,
         'child_id' => result['child_id'].to_i,
@@ -115,11 +117,12 @@ class Task
         'required' => result['required'],
         'completed' => result['completed'],
       }
+
+
     end
 
     #Update Assigned Task
     def self.updateAssignedTask(id, opts)
-      puts opts
       results = DB.exec(
         <<-SQL
           UPDATE assigned_tasks
@@ -130,6 +133,7 @@ class Task
         SQL
       )
       result = results.first
+      Score.updateAssignments(result['child_id'].to_i)
       return {
         'id' => result['id'].to_i,
         'child_id' => result['child_id'].to_i,
@@ -140,6 +144,7 @@ class Task
         'required' => result['required'],
         'completed' => result['completed'],
       }
+
     end
 
 
@@ -155,11 +160,23 @@ class Task
 
     # Delete Assigned Task
     def self.deleteAssignedTask(id)
+      childID = DB.exec(
+        <<-SQL
+          SELECT child_id
+          FROM assigned_tasks
+          WHERE id=#{id}
+        SQL
+      )
+      puts '======================'
+
+      child = childID.first['child_id'].to_i
       results = DB.exec(
         <<-SQL
           DELETE FROM assigned_tasks WHERE id=#{id}
         SQL
       )
+
+      Score.updateAssignments(child)
       return { 'deleted': true }
     end
 
