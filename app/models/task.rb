@@ -36,7 +36,7 @@ class Task
 
         SQL
       )
-      results.map do |result|
+      results.find_all do |result|
         if result["frequency"] === "weekdays" && (DateTime.now.to_date.wday >= 1 || DateTime.now.to_date.wday <= 5)
           {
             'id' => result['id'].to_i,
@@ -72,6 +72,7 @@ class Task
           }
         end
       end
+
     end
 
     # Create
