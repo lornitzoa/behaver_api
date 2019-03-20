@@ -9,6 +9,16 @@ class Task
     DB = PG.connect(:host => 'localhost', :port => 5432, :dbname => 'behaver_api_development')
   end
 
+    # Task Reset Completion
+    def self.resetCompletion
+      results = DB.exec(
+        <<-SQL
+          UPDATE assigned_tasks
+          SET completed=false
+        SQL
+      )
+    end
+
     # Index
     def self.all
       results = DB.exec(
