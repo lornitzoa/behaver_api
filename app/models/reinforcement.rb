@@ -8,9 +8,13 @@ class Reinforcement
     DB = PG.connect(:host => 'localhost', :port => 5432, :dbname => 'behaver_api_development')
   end
 
+  def self.resetReinforcements
+    results = DB.exec('UPDATE reinforcements_available_to SET no_available=daily_allotment')
+  end
+
   # Index
   def self.all
-    results = DB.exec('SELECT * FROM reinforcements ORDER BY reinforcement;')
+    results = DB.exec('SELECT * FROM reinforcements ORDER BY y;')
     results.map do |result|
       {
         'id' => result['id'].to_i,

@@ -11,6 +11,12 @@ task :reset_task_completion => :environment do
   puts 'done'
 end
 
+task :reset_reinforcements => :environment do
+  puts 'Resetting Reinforcements'
+  Reinforcement.resetReinforcements
+  puts 'done'
+end
+
 # task :send_reminders => :environment do
 #   User.send_reminders
 # end
