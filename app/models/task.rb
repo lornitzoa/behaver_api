@@ -24,6 +24,7 @@ class Task
       results = DB.exec(
         <<-SQL
           SELECT * FROM tasks
+          ORDER BY task
         SQL
       )
       results.map do |result|
@@ -43,7 +44,7 @@ class Task
           FROM assigned_tasks
           INNER JOIN tasks
             ON assigned_tasks.task_id = tasks.id
-
+          ORDER BY tasks.task
         SQL
       )
       result = results.map do |result|

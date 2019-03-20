@@ -10,7 +10,7 @@ class Behavior
 
   # Index
   def self.all
-    results = DB.exec('SELECT * FROM behaviors;')
+    results = DB.exec('SELECT * FROM behaviors ORDER BY behavior;')
     results.map do |result|
       {
         'id' => result['id'].to_i,
@@ -29,6 +29,7 @@ class Behavior
       FROM assigned_behaviors
       INNER JOIN behaviors
         ON assigned_behaviors.behavior_id = behaviors.id
+      ORDER BY behaviors.behavior
     SQL
   )
   results.map do |result|
