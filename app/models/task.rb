@@ -36,7 +36,7 @@ class Task
 
         SQL
       )
-      results.find_all do |result|
+      result = results.map do |result|
         if result["frequency"] === "weekdays" && (DateTime.now.to_date.wday >= 1 || DateTime.now.to_date.wday <= 5)
           {
             'id' => result['id'].to_i,
@@ -72,7 +72,7 @@ class Task
           }
         end
       end
-
+      return result.compact!
     end
 
     # Create
@@ -107,6 +107,7 @@ class Task
       )
 
       result = results.first
+      # prompt score table to get number of task assignments for each category
       Score.updateAssignments(result['child_id'].to_i)
       return {
         'id' => result['id'].to_i,
@@ -134,6 +135,7 @@ class Task
         SQL
       )
       result = results.first
+      # prompt score table to get number of task assignments for each category
       Score.updateAssignments(result['child_id'].to_i)
       return {
         'id' => result['id'].to_i,
@@ -176,7 +178,7 @@ class Task
           DELETE FROM assigned_tasks WHERE id=#{id}
         SQL
       )
-
+      # prompt score table to get number of task assignments for each category
       Score.updateAssignments(child)
       return { 'deleted': true }
     end

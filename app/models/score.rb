@@ -127,21 +127,31 @@ class Score
     return { 'deleted': true}
   end
 
+  # Update Task Completion Ratios
   def self.updateAssignments(childID)
     today = DateTime.now.to_date
     puts childID
-    req_tasks = Task.indexAssignments.compact.select! { |task|
+    req_tasks = Task.indexAssignments.count { |task|
       task['child_id'] === childID && task['required'] === 't'
     }
-    bonus_tasks = Task.indexAssignments.compact.select! { |task|
+    req_tasks_complete = Task.indexAssignments.count { |task|
+      task['child_id'] === childID && task['required'] === 't' && task['completed'] === 't'
+    }
+    bonus_tasks = Task.indexAssignments.count { |task|
       task['child_id'] === childID && task['required'] === 'f'
     }
-    puts req_tasks.length
-    puts bonus_tasks.length
+    bonus_tasks_complete = Task.indexAssignments.count { |task|
+      task['child_id'] === childID && task['required'] === 'f' && task['completed'] === 't'
+    }
+
     updateReqStatus = DB.exec(
       <<-SQL
         UPDATE scores
-        SET req_tasks_assigned=#{req_tasks.length}, bonus_tasks_assigned=#{bonus_tasks.length}
+        SET
+          req_tasks_complete=#{req_tasks_complete},
+          req_tasks_assigned=#{req_tasks},
+          bonus_tasks_complete=#{bonus_tasks_complete},
+          bonus_tasks_assigned=#{bonus_tasks}
         WHERE member_id=#{childID} AND date='#{today}'
       SQL
     )
