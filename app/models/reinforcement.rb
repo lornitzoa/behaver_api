@@ -14,7 +14,7 @@ class Reinforcement
 
   # Index
   def self.all
-    results = DB.exec('SELECT * FROM reinforcements ORDER BY y;')
+    results = DB.exec('SELECT * FROM reinforcements ORDER BY reinforcement;')
     results.map do |result|
       {
         'id' => result['id'].to_i,
