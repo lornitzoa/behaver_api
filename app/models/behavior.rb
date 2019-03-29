@@ -10,6 +10,7 @@ class Behavior
 
   # Index
   def self.all(opts)
+    puts opts
     results = DB.exec("SELECT * FROM behaviors WHERE family_id=#{opts} ORDER BY behavior ;")
     results.map do |result|
       {

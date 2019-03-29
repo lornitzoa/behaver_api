@@ -42,18 +42,18 @@ class Score
        SQL
      )
      prevScores.map do |prevScore|
-       puts 'mapping prevScores'
-       puts prevScore['points_available']
-       puts prevScore['stashed_cash']
+       # puts 'mapping prevScores'
+       # puts prevScore['points_available']
+       # puts prevScore['stashed_cash']
        newStash = 200 #prevScore['points_available'].to_i + prevScore['stashed_cash'].to_i
 
        resetScores = DB.exec(
          <<-SQL
          INSERT INTO scores
-           (date, member_id, bx_points_earned, req_tasks_complete, req_tasks_assigned, bonus_tasks_complete, bonus_tasks_assigned, task_points_earned, total_points_earned, points_used, points_available, stashed_cash)
+           (date, member_id, bx_points_earned, req_tasks_complete, req_tasks_assigned, bonus_tasks_complete, bonus_tasks_assigned, task_points_earned, total_points_earned, points_used, points_available, stashed_cash, family_id)
          VALUES
-           ('#{today}', #{child['member_id']}, 0, 0, #{req_tasks.length}, 0, #{bonus_tasks.length}, 0, 0, 0, 0, #{newStash})
-         RETURNING id, date, member_id, bx_points_earned, req_tasks_complete, req_tasks_assigned, bonus_tasks_complete, bonus_tasks_assigned, task_points_earned, total_points_earned, points_used, points_available, stashed_cash
+           ('#{today}', #{child['member_id']}, 0, 0, #{req_tasks.length}, 0, #{bonus_tasks.length}, 0, 0, 0, 0, #{newStash}, #{child['family_id']})
+         RETURNING id, date, member_id, bx_points_earned, req_tasks_complete, req_tasks_assigned, bonus_tasks_complete, bonus_tasks_assigned, task_points_earned, total_points_earned, points_used, points_available, stashed_cash, family_id
          SQL
        )
      end
@@ -95,8 +95,7 @@ class Score
 
   # Create
   def self.create(opts)
-    puts '============== creating new score ========'
-    puts opts
+
     results = DB.exec(
       <<-SQL
         INSERT INTO scores
@@ -131,20 +130,23 @@ class Score
   end
 
   # Update Task Completion Ratios
-  def self.updateAssignments(childID)
+  def self.updateAssignments(child_id)
     today = DateTime.now.to_date
-    puts childID
-    req_tasks = Task.indexAssignments.count { |task|
-      task['child_id'] === childID && task['required'] === 't'
+    puts '======== in updateAssignments ============='
+    puts child_id
+    get_family_id = DB.exec("SELECT family_id FROM members WHERE member_id=#{child_id}")
+    family_id = get_family_id.first['family_id']
+    req_tasks = Task.indexAssignments(family_id).count { |task|
+      task['child_id'] === child_id && task['required'] === 't'
     }
-    req_tasks_complete = Task.indexAssignments.count { |task|
-      task['child_id'] === childID && task['required'] === 't' && task['completed'] === 't'
+    req_tasks_complete = Task.indexAssignments(family_id).count { |task|
+      task['child_id'] === child_id && task['required'] === 't' && task['completed'] === 't'
     }
-    bonus_tasks = Task.indexAssignments.count { |task|
-      task['child_id'] === childID && task['required'] === 'f'
+    bonus_tasks = Task.indexAssignments(family_id).count { |task|
+      task['child_id'] === child_id && task['required'] === 'f'
     }
-    bonus_tasks_complete = Task.indexAssignments.count { |task|
-      task['child_id'] === childID && task['required'] === 'f' && task['completed'] === 't'
+    bonus_tasks_complete = Task.indexAssignments(family_id).count { |task|
+      task['child_id'] === child_id && task['required'] === 'f' && task['completed'] === 't'
     }
 
     updateReqStatus = DB.exec(
@@ -155,7 +157,7 @@ class Score
           req_tasks_assigned=#{req_tasks},
           bonus_tasks_complete=#{bonus_tasks_complete},
           bonus_tasks_assigned=#{bonus_tasks}
-        WHERE member_id=#{childID} AND date='#{today}'
+        WHERE member_id=#{child_id} AND date='#{today}'
       SQL
     )
   end

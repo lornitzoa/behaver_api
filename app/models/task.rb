@@ -20,13 +20,10 @@ class Task
     end
 
     # Index
-    def self.all
-      results = DB.exec(
-        <<-SQL
-          SELECT * FROM tasks
-          ORDER BY task
-        SQL
-      )
+    def self.all(opts)
+      puts "======= i'm in task.all ========="
+      puts opts
+      results = DB.exec("SELECT * FROM tasks WHERE family_id=#{opts.to_i};")
       results.map do |result|
         {
           'id' => result['id'].to_i,
@@ -37,13 +34,15 @@ class Task
     end
 
     # Index Assigned Tasks
-    def self.indexAssignments
+    def self.indexAssignments(opts)
       results = DB.exec(
         <<-SQL
           SELECT assigned_tasks.*, tasks.task
           FROM assigned_tasks
+
           INNER JOIN tasks
             ON assigned_tasks.task_id = tasks.id
+          WHERE assigned_tasks.family_id=#{opts}
           ORDER BY tasks.task
         SQL
       )
@@ -58,6 +57,7 @@ class Task
             'points' => result['points'],
             'required' => result['required'],
             'completed' => result['completed'],
+            'family_id' => result['family_id']
           }
         elsif result["frequency"] === "weekends" && (DateTime.now.to_date.wday === 0 || DateTime.now.to_date.wday === 6)
           {
@@ -69,6 +69,7 @@ class Task
             'points' => result['points'],
             'required' => result['required'],
             'completed' => result['completed'],
+            'family_id' => result['family_id']
           }
         elsif result["frequency"] === "daily"
           {
@@ -80,6 +81,7 @@ class Task
             'points' => result['points'],
             'required' => result['required'],
             'completed' => result['completed'],
+            'family_id' => result['family_id']
           }
         end
       end
@@ -107,13 +109,14 @@ class Task
 
     # Assign a Task
     def self.assignTask(opts)
+      # puts opts
       results = DB.exec(
         <<-SQL
           INSERT INTO assigned_tasks
-            (child_id, task_id, frequency, time_of_day, points, required, completed)
+            (child_id, task_id, frequency, time_of_day, points, required, completed, family_id)
           VALUES
-            (#{opts["child_id"]}, #{opts["task_id"]}, '#{opts["frequency"]}', '#{opts["time_of_day"]}', #{opts["points"]}, #{opts["required"]}, #{opts["completed"]})
-          RETURNING id, child_id, task_id, frequency, time_of_day, points, required, completed
+            (#{opts["child_id"]}, #{opts["task_id"]}, '#{opts["frequency"]}', '#{opts["time_of_day"]}', #{opts["points"]}, #{opts["required"]}, #{opts["completed"]}, #{opts['family_id']})
+          RETURNING id, child_id, task_id, frequency, time_of_day, points, required, completed, family_id
         SQL
       )
 
@@ -174,6 +177,7 @@ class Task
 
     # Delete Assigned Task
     def self.deleteAssignedTask(id)
+      # puts "============= i'm in task.deleteAssignedTask ========"
       childID = DB.exec(
         <<-SQL
           SELECT child_id
@@ -181,8 +185,6 @@ class Task
           WHERE id=#{id}
         SQL
       )
-      puts '======================'
-
       child = childID.first['child_id'].to_i
       results = DB.exec(
         <<-SQL

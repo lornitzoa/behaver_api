@@ -18,7 +18,7 @@ Rails.application.routes.draw do
 #      MEMBER ROUTES    #
   # ---------------------------------------------
 
-  get '/members/:role', to: 'members#children'
+  # get '/members/:role', to: 'members#children'
 
   get '/members/:family_id', to: 'members#index'
 

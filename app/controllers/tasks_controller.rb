@@ -1,12 +1,14 @@
 class TasksController < ApplicationController
 
-  def index
-    puts "======================================="
-    render json: Task.all(params['family_id'])
+  def show
+    puts "============ Going to Task.all ==========="
+    puts params
+    render json: Task.all(params['id'])
   end
 
-  def show
-    render json: Task.indexAssignments
+  def indexAssignments
+    puts params
+    render json: Task.indexAssignments(params['family_id'])
   end
 
   def create
@@ -18,11 +20,13 @@ class TasksController < ApplicationController
   end
 
   def destroy
-    puts 'destroy method running'
+
     render json: Task.delete(params['id'])
   end
 
   def deleteAssignedTask
+    puts '================ deleting============'
+    puts params
     render json: Task.deleteAssignedTask(params['id'])
   end
 

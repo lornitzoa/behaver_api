@@ -14,7 +14,8 @@ class Member
 
     # Index
     def self.all(opts)
-      results = DB.exec("SELECT * FROM members WHERE family_id=#{opts};")
+      puts "============ #{opts.to_i} ==============="
+      results = DB.exec("SELECT * FROM members WHERE family_id=#{opts.to_i};")
       results.map do |result|
       {
           'member_id' => result['member_id'].to_i,
