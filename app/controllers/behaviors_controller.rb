@@ -1,7 +1,7 @@
 class BehaviorsController < ApplicationController
 
   def index
-    render json: Behavior.all
+    render json: Behavior.all(params['family_id'])
   end
 
   def indexBehaviors

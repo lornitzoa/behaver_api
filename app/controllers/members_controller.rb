@@ -1,7 +1,7 @@
 class MembersController < ApplicationController
 
   def index
-    render json: Member.all
+    render json: Member.all(params['family_id'])
   end
 
   def show

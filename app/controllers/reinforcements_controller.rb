@@ -1,7 +1,7 @@
 class ReinforcementsController < ApplicationController
 
   def index
-    render json: Reinforcement.all
+    render json: Reinforcement.all(params['family_id'])
   end
 
   def indexReinforcements

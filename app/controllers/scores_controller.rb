@@ -1,7 +1,7 @@
 class ScoresController < ApplicationController
 
   def index
-    render json: Score.all
+    render json: Score.all(params['family_id'])
   end
 
   def create

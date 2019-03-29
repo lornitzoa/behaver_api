@@ -20,7 +20,7 @@ Rails.application.routes.draw do
 
   get '/members/:role', to: 'members#children'
 
-  get '/members', to: 'members#index'
+  get '/members/:family_id', to: 'members#index'
 
   get '/members/:id', to: 'members#show'
 
@@ -35,7 +35,7 @@ Rails.application.routes.draw do
   #      Behavior Routes    #
     # ---------------------------------------------
 
-  get '/behaviors', to: 'behaviors#index'
+  get '/behaviors/:family_id', to: 'behaviors#index'
 
   post '/behaviors', to: 'behaviors#create'
 
@@ -49,7 +49,7 @@ Rails.application.routes.draw do
 
   resources :behaviors do
     collection do
-      get '/assignments', to: 'behaviors#indexBehaviors'
+      get '/assignments/:family_id', to: 'behaviors#indexBehaviors'
 
       post '/assignments', to: 'behaviors#assignBehaviors'
 
@@ -64,7 +64,7 @@ Rails.application.routes.draw do
   #      TASK ROUTES    #
     # ---------------------------------------------
 
-  get '/tasks', to: 'tasks#index'
+  get '/tasks/:family_id', to: 'tasks#index'
 
   post '/tasks', to: 'tasks#create'
 
@@ -78,7 +78,7 @@ Rails.application.routes.draw do
 
   resources :tasks do
     collection do
-      get '/assignments', to: 'tasks#indexAssignments'
+      get '/assignments/:family_id', to: 'tasks#indexAssignments'
 
       post '/assignments', to: 'tasks#assignTask'
 
@@ -93,7 +93,7 @@ Rails.application.routes.draw do
     # ---------------------------------------------
   #      REINFORCEMENT ROUTES    #
     # ---------------------------------------------
-  get '/reinforcements', to: 'reinforcements#index'
+  get '/reinforcements/:family_id', to: 'reinforcements#index'
 
   post '/reinforcements', to: 'reinforcements#create'
 
@@ -107,7 +107,7 @@ Rails.application.routes.draw do
 
   resources :reinforcements do
     collection do
-      get '/assignments', to: 'reinforcements#indexReinforcements'
+      get '/assignments/:family_id', to: 'reinforcements#indexReinforcements'
 
       post '/assignments', to: 'reinforcements#assignReinforcement'
 
@@ -121,7 +121,7 @@ Rails.application.routes.draw do
 #      SCORES ROUTES    #
   # ---------------------------------------------
 
-  get '/scores', to: 'scores#index'
+  get '/scores/:family_id', to: 'scores#index'
 
   post '/scores', to: 'scores#create'
 

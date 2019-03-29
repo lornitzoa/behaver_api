@@ -1,3 +1,7 @@
+require 'date'
+require 'json'
+
+
 class Member
 
   # Connections
@@ -9,8 +13,8 @@ class Member
     end
 
     # Index
-    def self.all
-      results = DB.exec('SELECT * FROM members;')
+    def self.all(opts)
+      results = DB.exec("SELECT * FROM members WHERE family_id=#{opts};")
       results.map do |result|
       {
           'member_id' => result['member_id'].to_i,
@@ -73,6 +77,29 @@ class Member
         SQL
       )
       result = results.first
+      if(result['role'] === 'child')
+        puts '============= is child ========='
+        today = DateTime.now.to_date
+        newChildScore = {
+            "date" => "#{today}",
+            "member_id" => result['member_id'],
+            "bx_points_earned" => 0,
+            "req_tasks_complete" => 0,
+            "req_tasks_assigned" => 0,
+            "bonus_tasks_complete" => 0,
+
+            "bonus_tasks_assigned" => 0,
+            "task_points_earned" => 0,
+            "total_points_earned" => 0,
+            "points_used" => 0,
+            "points_available" => 0,
+            "stashed_cash" => 0
+          }
+          # working on handling of adding new children to scores
+          puts newChildScore
+          Score.create(newChildScore)
+
+      end
       return {
           'member_id' => result['member_id'].to_i,
           'name' => result['name'],

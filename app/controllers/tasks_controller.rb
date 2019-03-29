@@ -2,7 +2,7 @@ class TasksController < ApplicationController
 
   def index
     puts "======================================="
-    render json: Task.all
+    render json: Task.all(params['family_id'])
   end
 
   def show

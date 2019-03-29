@@ -64,13 +64,13 @@ class Score
 
 
   # Index
-  def self.all
+  def self.all(opts)
     today = DateTime.now.to_date
     results = DB.exec(
       <<-SQL
         SELECT *
         FROM scores
-        WHERE date='#{today}'
+        WHERE date='#{today}' AND family_id=#{opts}
       SQL
     )
     results.map do |result|
@@ -87,20 +87,23 @@ class Score
         'total_points_earned' => result['total_points_earned'].to_i,
         'points_used' => result['points_used'].to_i,
         'points_available' => result['points_available'].to_i,
-        'stashed_cash' => result['stashed_cash'].to_i
+        'stashed_cash' => result['stashed_cash'].to_i,
+        'family_id' => result['family_id'].to_i
       }
     end
   end
 
   # Create
   def self.create(opts)
+    puts '============== creating new score ========'
+    puts opts
     results = DB.exec(
       <<-SQL
         INSERT INTO scores
-          (date, member_id, bx_points_earned, req_tasks_complete, req_tasks_assigned, bonus_tasks_complete, bonus_tasks_assigned, task_points_earned, total_points_earned, points_used, points_available, stashed_cash)
+          (date, member_id, bx_points_earned, req_tasks_complete, req_tasks_assigned, bonus_tasks_complete, bonus_tasks_assigned, task_points_earned, total_points_earned, points_used, points_available, stashed_cash, family_id)
         VALUES
-          ('#{opts['date']}', #{opts['member_id']}, #{opts['bx_points_earned']}, #{opts['req_tasks_complete']}, #{opts['req_tasks_assigned']}, #{opts['bonus_tasks_complete']}, #{opts['bonus_tasks_assigned']}, #{opts['task_points_earned']}, #{opts['total_points_earned']}, #{opts['points_used']}, #{opts['points_available']}, #{opts['stashed_cash']})
-        RETURNING id, date, member_id, bx_points_earned, req_tasks_complete, req_tasks_assigned, bonus_tasks_complete, bonus_tasks_assigned, task_points_earned, total_points_earned, points_used, points_available, stashed_cash
+          ('#{opts['date']}', #{opts['member_id']}, #{opts['bx_points_earned']}, #{opts['req_tasks_complete']}, #{opts['req_tasks_assigned']}, #{opts['bonus_tasks_complete']}, #{opts['bonus_tasks_assigned']}, #{opts['task_points_earned']}, #{opts['total_points_earned']}, #{opts['points_used']}, #{opts['points_available']}, #{opts['stashed_cash']}, #{opts['family_id']})
+        RETURNING id, date, member_id, bx_points_earned, req_tasks_complete, req_tasks_assigned, bonus_tasks_complete, bonus_tasks_assigned, task_points_earned, total_points_earned, points_used, points_available, stashed_cash, family_id
       SQL
     )
     result = results.first
@@ -186,7 +189,7 @@ class Score
         WHERE
           member_id=#{member_id} AND date='#{today}'
         RETURNING
-          id, member_id, bx_points_earned, req_tasks_complete, req_tasks_assigned, bonus_tasks_complete, bonus_tasks_assigned, task_points_earned, total_points_earned, points_used, points_available, stashed_cash
+          id, member_id, bx_points_earned, req_tasks_complete, req_tasks_assigned, bonus_tasks_complete, bonus_tasks_assigned, task_points_earned, total_points_earned, points_used, points_available, stashed_cash, family_id
       SQL
     )
     result = updateAvailablePoints.first
@@ -203,7 +206,8 @@ class Score
       'total_points_earned' => result['total_points_earned'].to_i,
       'points_used' => result['points_used'].to_i,
       'points_available' => result['points_available'].to_i,
-      'stashed_cash' => result['stashed_cash'].to_i
+      'stashed_cash' => result['stashed_cash'].to_i,
+      'family_id' => result['family_id'].to_i
     }
 
   end
@@ -224,9 +228,10 @@ class Score
         #{opts['total_points_earned']},
         #{opts['points_used']},
         #{opts['points_available']},
-        #{opts['stashed_cash']})
+        #{opts['stashed_cash']}),
+        #{opts['family_id']}
         RETURNING
-          id, member_id, bx_points_earned, req_tasks_complete, req_tasks_assigned, bonus_tasks_complete, bonus_tasks_assigned, task_points_earned, total_points_earned, points_used, points_available, stashed_cash
+          id, member_id, bx_points_earned, req_tasks_complete, req_tasks_assigned, bonus_tasks_complete, bonus_tasks_assigned, task_points_earned, total_points_earned, points_used, points_available, stashed_cash, family_id
       SQL
     )
     result = results.first
@@ -243,7 +248,8 @@ class Score
       'total_points_earned' => result['total_points_earned'].to_i,
       'points_used' => result['points_used'].to_i,
       'points_available' => result['points_available'].to_i,
-      'stashed_cash' => result['stashed_cash'].to_i
+      'stashed_cash' => result['stashed_cash'].to_i,
+      'family_id' => result['family_id'].to_i
     }
   end
 
