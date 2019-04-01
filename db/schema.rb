@@ -31,6 +31,7 @@ ActiveRecord::Schema.define(version: 2019_03_08_183118) do
     t.integer "points"
     t.boolean "required"
     t.boolean "completed"
+    t.integer "family_id"
   end
 
   create_table "behaviors", id: false, force: :cascade do |t|
@@ -77,12 +78,19 @@ ActiveRecord::Schema.define(version: 2019_03_08_183118) do
     t.integer "points_used"
     t.integer "points_available"
     t.integer "stashed_cash"
+    t.integer "family_id"
   end
 
   create_table "tasks", id: false, force: :cascade do |t|
     t.serial "id", null: false
     t.string "task", limit: 30
     t.integer "family_id"
+  end
+
+  create_table "test", id: false, force: :cascade do |t|
+    t.integer "val1"
+    t.integer "val2"
+    t.integer "sumcol"
   end
 
   create_table "users", force: :cascade do |t|
