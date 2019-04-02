@@ -141,6 +141,7 @@ class Task
 
     #Update Assigned Task
     def self.updateAssignedTask(id, opts)
+      puts opts['family_id']
       results = DB.exec(
         <<-SQL
           UPDATE assigned_tasks
