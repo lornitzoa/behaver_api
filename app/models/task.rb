@@ -51,7 +51,13 @@ class Task
         return {
           'id' => result['id'],
           'child_id' => result['child_id'].to_i,
-          'task_name' => result['task']
+          'task_name' => result['task'],
+          'frequency' => result['frequency'],
+         'time_of_day' => result['time_of_day'],
+         'points' => result['points'],
+         'required' => result['required'],
+         'completed' => result['completed'],
+         'family_id' => result['family_id']
         }
         # if result["frequency"] === "weekdays" && (DateTime.now.to_date.wday >= 1 || DateTime.now.to_date.wday <= 5)
         #   {
