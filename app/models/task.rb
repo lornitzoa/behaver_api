@@ -48,54 +48,43 @@ class Task
         SQL
       )
       result = results.map do |result|
-        {
-          'id' => result['id'],
-          'child_id' => result['child_id'].to_i,
-          'task_name' => result['task'],
-          'frequency' => result['frequency'],
-         'time_of_day' => result['time_of_day'],
-         'points' => result['points'],
-         'required' => result['required'],
-         'completed' => result['completed'],
-         'family_id' => result['family_id']
-        }
-        # if result["frequency"] === "weekdays" && (DateTime.now.to_date.wday >= 1 || DateTime.now.to_date.wday <= 5)
-        #   {
-        #     'id' => result['id'].to_i,
-        #     'child_id' => result['child_id'].to_i,
-        #     'task_name' => result['task'],
-        #     'frequency' => result['frequency'],
-        #     'time_of_day' => result['time_of_day'],
-        #     'points' => result['points'],
-        #     'required' => result['required'],
-        #     'completed' => result['completed'],
-        #     'family_id' => result['family_id']
-        #   }
-        # elsif result["frequency"] === "weekends" && (DateTime.now.to_date.wday === 0 || DateTime.now.to_date.wday === 6)
-        #   {
-        #     'id' => result['id'].to_i,
-        #     'child_id' => result['child_id'].to_i,
-        #     'task_name' => result['task'],
-        #     'frequency' => result['frequency'],
-        #     'time_of_day' => result['time_of_day'],
-        #     'points' => result['points'],
-        #     'required' => result['required'],
-        #     'completed' => result['completed'],
-        #     'family_id' => result['family_id']
-        #   }
-        # elsif result["frequency"] === "daily"
-        #   {
-        #     'id' => result['id'].to_i,
-        #     'child_id' => result['child_id'].to_i,
-        #     'task_name' => result['task'],
-        #     'frequency' => result['frequency'],
-        #     'time_of_day' => result['time_of_day'],
-        #     'points' => result['points'],
-        #     'required' => result['required'],
-        #     'completed' => result['completed'],
-        #     'family_id' => result['family_id']
-        #   }
-        # end
+        if result["frequency"] === "weekdays" && (DateTime.now.to_date.wday >= 1 || DateTime.now.to_date.wday <= 5)
+          {
+            'id' => result['id'].to_i,
+            'child_id' => result['child_id'].to_i,
+            'task_name' => result['task'],
+            'frequency' => result['frequency'],
+            'time_of_day' => result['time_of_day'],
+            'points' => result['points'],
+            'required' => result['required'],
+            'completed' => result['completed'],
+            'family_id' => result['family_id']
+          }
+        elsif result["frequency"] === "weekends" && (DateTime.now.to_date.wday === 0 || DateTime.now.to_date.wday === 6)
+          {
+            'id' => result['id'].to_i,
+            'child_id' => result['child_id'].to_i,
+            'task_name' => result['task'],
+            'frequency' => result['frequency'],
+            'time_of_day' => result['time_of_day'],
+            'points' => result['points'],
+            'required' => result['required'],
+            'completed' => result['completed'],
+            'family_id' => result['family_id']
+          }
+        elsif result["frequency"] === "daily"
+          {
+            'id' => result['id'].to_i,
+            'child_id' => result['child_id'].to_i,
+            'task_name' => result['task'],
+            'frequency' => result['frequency'],
+            'time_of_day' => result['time_of_day'],
+            'points' => result['points'],
+            'required' => result['required'],
+            'completed' => result['completed'],
+            'family_id' => result['family_id']
+          }
+        end
       end
       # return result.compact!
     end
