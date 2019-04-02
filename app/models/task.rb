@@ -133,6 +133,7 @@ class Task
         'points' => result['points'].to_i,
         'required' => result['required'],
         'completed' => result['completed'],
+        'family_id' => result['family_id'].to_i
       }
 
 

@@ -31,6 +31,8 @@ class TasksController < ApplicationController
   end
 
   def updateAssignedTask
+    puts '============== incoming params =============='
+    puts params
     render json: Task.updateAssignedTask(params['id'], params['task'])
   end
 
