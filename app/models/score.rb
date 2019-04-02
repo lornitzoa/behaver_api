@@ -100,6 +100,7 @@ class Score
         SELECT *
         FROM scores
         WHERE date='#{today}' AND family_id=#{opts}
+        ORDER BY member_id
       SQL
     )
     results.map do |result|
