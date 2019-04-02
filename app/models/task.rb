@@ -143,9 +143,9 @@ class Task
         <<-SQL
           UPDATE assigned_tasks
           SET
-            child_id=#{opts["child_id"]}, task_id=#{opts["task_id"]}, frequency='#{opts["frequency"]}', time_of_day='#{opts["time_of_day"]}', points=#{opts["points"]}, required=#{opts["required"]}, completed=#{opts["completed"]}
+            child_id=#{opts["child_id"]}, task_id=#{opts["task_id"]}, frequency='#{opts["frequency"]}', time_of_day='#{opts["time_of_day"]}', points=#{opts["points"]}, required=#{opts["required"]}, completed=#{opts["completed"]}, family_id=#{opts["family_id"]}
           WHERE id=#{id}
-          RETURNING id, child_id, task_id, frequency, time_of_day, points, required, completed
+          RETURNING id, child_id, task_id, frequency, time_of_day, points, required, completed, family_id
         SQL
       )
       result = results.first
@@ -160,6 +160,7 @@ class Task
         'points' => result['points'].to_i,
         'required' => result['required'],
         'completed' => result['completed'],
+        'family_id' => result['family_id']
       }
 
     end
