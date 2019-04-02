@@ -35,6 +35,7 @@ class Task
 
     # Index Assigned Tasks
     def self.indexAssignments(family_id)
+      puts '====== i\m in indexAssignments ====== '
       results = DB.exec(
         <<-SQL
           SELECT assigned_tasks.*, tasks.task
