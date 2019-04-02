@@ -94,7 +94,8 @@ class Member
             "total_points_earned" => 0,
             "points_used" => 0,
             "points_available" => 0,
-            "stashed_cash" => 0
+            "stashed_cash" => 0,
+            "family_id" => opts['family_id']
           }
           # working on handling of adding new children to scores
           puts newChildScore
