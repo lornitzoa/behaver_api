@@ -62,6 +62,7 @@ ActiveRecord::Schema.define(version: 2019_03_08_183118) do
     t.integer "points"
     t.integer "daily_allotment"
     t.integer "no_available"
+    t.integer "family_id"
   end
 
   create_table "scores", id: false, force: :cascade do |t|

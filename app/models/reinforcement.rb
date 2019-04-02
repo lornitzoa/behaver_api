@@ -73,8 +73,8 @@ class Reinforcement
         INSERT INTO reinforcements_available_to
           (child_id, reinforcement_id, points, daily_allotment, no_available)
         VALUES
-          (#{opts['child_id']}, #{opts['reinforcement_id']}, #{opts['points']}, '#{opts['daily_allotment']}', #{opts['no_available']})
-        RETURNING id, child_id, reinforcement_id, points, daily_allotment, no_available
+          (#{opts['child_id']}, #{opts['reinforcement_id']}, #{opts['points']}, '#{opts['daily_allotment']}', #{opts['no_available']}), #{opts['family_id']}
+        RETURNING id, child_id, reinforcement_id, points, daily_allotment, no_available, family_id
       SQL
     )
     result = results.first
@@ -84,7 +84,8 @@ class Reinforcement
       'reinforcement_id' => result['reinforcement_id'].to_i,
       'points' => result['points'].to_i,
       'daily_allotment' => result['daily_allotment'],
-      'no_available' => result['no_available']
+      'no_available' => result['no_available'],
+      'family_id' => result['family_id'].to_i
     }
   end
 
