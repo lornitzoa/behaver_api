@@ -1,8 +1,6 @@
 class TasksController < ApplicationController
 
   def show
-    puts "============ Going to Task.all ==========="
-    puts params
     render json: Task.all(params['id'])
   end
 
@@ -25,8 +23,6 @@ class TasksController < ApplicationController
   end
 
   def deleteAssignedTask
-    puts '================ deleting============'
-    puts params
     render json: Task.deleteAssignedTask(params['id'])
   end
 

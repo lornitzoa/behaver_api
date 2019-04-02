@@ -34,7 +34,7 @@ class Task
     end
 
     # Index Assigned Tasks
-    def self.indexAssignments(opts)
+    def self.indexAssignments(family_id)
       results = DB.exec(
         <<-SQL
           SELECT assigned_tasks.*, tasks.task
@@ -42,7 +42,7 @@ class Task
 
           INNER JOIN tasks
             ON assigned_tasks.task_id = tasks.id
-          WHERE assigned_tasks.family_id=#{opts}
+          WHERE assigned_tasks.family_id=#{family_id}
           ORDER BY tasks.task
         SQL
       )
