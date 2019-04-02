@@ -48,7 +48,7 @@ class Task
         SQL
       )
       result = results.map do |result|
-        return {
+        {
           'id' => result['id'],
           'child_id' => result['child_id'].to_i,
           'task_name' => result['task'],
