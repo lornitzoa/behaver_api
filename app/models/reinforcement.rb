@@ -43,6 +43,7 @@ class Reinforcement
         'points' => result['points'].to_i,
         'daily_allotment' => result['daily_allotment'],
         'no_available' => result['no_available'],
+        'family_id' => result['family_id']
       }
     end
   end
@@ -71,7 +72,7 @@ class Reinforcement
     results = DB.exec(
       <<-SQL
         INSERT INTO reinforcements_available_to
-          (child_id, reinforcement_id, points, daily_allotment, no_available)
+          (child_id, reinforcement_id, points, daily_allotment, no_available, family_id)
         VALUES
           (#{opts['child_id']}, #{opts['reinforcement_id']}, #{opts['points']}, '#{opts['daily_allotment']}', #{opts['no_available']}), #{opts['family_id']}
         RETURNING id, child_id, reinforcement_id, points, daily_allotment, no_available, family_id
