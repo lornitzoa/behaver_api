@@ -59,9 +59,6 @@ class Score
      else
        req_tasks = []
        bonus_tasks = []
-
-
-
        prevScores = DB.exec(
          <<-SQL
            SELECT *
@@ -194,14 +191,15 @@ class Score
 
   # Patch
   def self.patch(member_id, opts)
-    # puts opts.keys
+    puts '==================='
+    puts opts
     today = DateTime.now.to_date
     opts.keys.each { |opt|
-      puts opt
+      puts '================='
       results = DB.exec(
         <<-SQL
           UPDATE scores
-          SET #{opt}=#{opt} + #{opts[opt]}
+          SET #{opt}=#{opt.to_i} + #{opts[opt].to_i}
           WHERE member_id=#{member_id} AND date='#{today}'
         SQL
       )
