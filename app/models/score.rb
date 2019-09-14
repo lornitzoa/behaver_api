@@ -195,11 +195,11 @@ class Score
     puts opts
     today = DateTime.now.to_date
     opts.keys.each { |opt|
-      puts '================='
+      puts opt
       results = DB.exec(
         <<-SQL
           UPDATE scores
-          SET #{opt}=#{opt.to_i} + #{opts[opt].to_i}
+          SET #{opt}=#{opt} + #{opts[opt]}
           WHERE member_id=#{member_id} AND date='#{today}'
         SQL
       )
