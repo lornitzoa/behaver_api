@@ -44,7 +44,7 @@ class Score
          # puts 'mapping prevScores'
          # puts prevScore['points_available']
          # puts prevScore['stashed_cash']
-         newStash = 200 #prevScore['points_available'].to_i + prevScore['stashed_cash'].to_i
+         newStash = prevScore['points_available'].to_i + prevScore['stashed_cash'].to_i
 
          resetScores = DB.exec(
            <<-SQL
@@ -70,7 +70,7 @@ class Score
          # puts 'mapping prevScores'
          # puts prevScore['points_available']
          # puts prevScore['stashed_cash']
-         newStash = 200 #prevScore['points_available'].to_i + prevScore['stashed_cash'].to_i
+         newStash = prevScore['points_available'] + prevScore['stashed_cash'] #prevScore['points_available'].to_i + prevScore['stashed_cash'].to_i
 
          resetScores = DB.exec(
            <<-SQL
